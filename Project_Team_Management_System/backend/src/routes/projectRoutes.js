@@ -4,7 +4,10 @@ import {
   getProjects,
   getProjectById,
   updateProject,
-  deleteProject
+  deleteProject,
+  addTeamMember, 
+  removeTeamMember,
+  getProjectOverview
 } from "../controllers/projectController.js";
 
 import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
@@ -21,5 +24,14 @@ router.get("/:id", protect, getProjectById);
 // Admin + Manager can update/delete
 router.put("/:id", protect, authorizeRoles("admin", "manager"), updateProject);
 router.delete("/:id", protect, authorizeRoles("admin", "manager"), deleteProject);
+
+// Add member
+router.post("/:id/team", protect, authorizeRoles("admin", "manager"), addTeamMember);
+
+// Remove member
+router.delete("/:id/team", protect, authorizeRoles("admin", "manager"), removeTeamMember);
+
+// Project Overview
+router.get("/:id/overview", protect, getProjectOverview);
 
 export default router;
